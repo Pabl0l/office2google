@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Política de privacidad — office2google</title>
+<meta name="description" content="Política de privacidad de office2google: qué datos trata, para qué y cómo ejercer tus derechos.">
+<meta name="theme-color" content="#0f1115">
+<link rel="canonical" href="/privacidad">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header>
+	<div class="wrap nav">
+		<a class="brand" href="/">office2<span>google</span></a>
+		<div class="spacer"></div>
+		<a class="link" href="/">Inicio</a>
+		<a class="link" href="/terminos">Condiciones</a>
+		<a class="btn btn-primary" style="padding:9px 18px;font-size:15px" href="mailto:jpom1310@gmail.com">Contacto</a>
+	</div>
+</header>
+
+<main class="wrap legal">
+
+	<div class="hero" style="text-align:left;padding-bottom:10px">
+		<h1>Política de privacidad</h1>
+		<p class="meta">Última actualización: 20 de octubre de 2026 · Aplicable a la aplicación <strong>office2google</strong> y a este sitio web.</p>
+	</div>
+
+	<div class="toc">
+		<strong>Contenido</strong>
+		<ol>
+			<li><a href="#responsable">Quién es responsable de los datos</a></li>
+			<li><a href="#alcance">Qué datos trata office2google</a></li>
+			<li><a href="#google">Uso de las APIs de Google</a></li>
+			<li><a href="#web">Cookies y datos de este sitio web</a></li>
+			<li><a href="#base">Base jurídica y finalidad</a></li>
+			<li><a href="#conservacion">Conservación y seguridad</a></li>
+			<li><a href="#terceros">Terceros y transferencias</a></li>
+			<li><a href="#derechos">Tus derechos</a></li>
+			<li><a href="#menores">Menores de edad</a></li>
+			<li><a href="#cambios">Cambios en esta política</a></li>
+			<li><a href="#contacto">Contacto</a></li>
+		</ol>
+	</div>
+
+	<section id="responsable" style="border-top:none">
+		<h2>1. Responsable del tratamiento</h2>
+		<p>
+			El responsable del tratamiento de los datos personales descritos en esta política es el desarrollador
+			de <strong>office2google</strong>, con correo electrónico de contacto
+			<a href="mailto:jpom1310@gmail.com">jpom1310@gmail.com</a>.
+		</p>
+		<p class="muted">
+			office2google es una aplicación de escritorio gratuita y de código abierto.
+			<strong>No opera ningún servidor ni servicio web propio</strong>: la aplicación corre íntegramiente en tu ordenador.
+		</p>
+	</section>
+
+	<section id="alcance">
+		<h2>2. Qué datos trata office2google</h2>
+		<p>La aplicación accede y almacena, exclusivamente en tu ordenador, la siguiente información:</p>
+		<table style="width:100%;border-collapse:collapse;font-size:15.5px">
+			<tr style="text-align:left;color:var(--muted)">
+				<th style="padding:8px 10px;border-bottom:1px solid var(--border)">Dato</th>
+				<th style="padding:8px 10px;border-bottom:1px solid var(--border)">Dónde se guarda</th>
+				<th style="padding:8px 10px;border-bottom:1px solid var(--border)">Para qué sirve</th>
+			</tr>
+			<tr>
+				<td style="padding:9px 10px;border-bottom:1px solid var(--border)">Tokens de acceso y de actualización de Google</td>
+				<td style="padding:9px 10px;border-bottom:1px solid var(--border)"><code>%APPDATA%\office2google\config.json</code></td>
+				<td style="padding:9px 10px;border-bottom:1px solid var(--border)">Mantener tu sesión iniciada sin pedirte la contraseña cada vez</td>
+			</tr>
+			<tr>
+				<td style="padding:9px 10px;border-bottom:1px solid var(--border)">ID de la carpeta «Office2Google» y de tus archivos en Drive</td>
+				<td style="padding:9px 10px;border-bottom:1px solid var(--border)"><code>config.json</code> (caché)</td>
+				<td style="padding:9px 10px;border-bottom:1px solid var(--border)">No duplicar archivos y abrir más rápido la carpeta correcta</td>
+			</tr>
+			<tr>
+				<td style="padding:9px 10px;border-bottom:1px solid var(--border)">Registro de eventos (log) de la aplicación</td>
+				<td style="padding:9px 10px;border-bottom:1px solid var(--border)"><code>%APPDATA%\office2google\office2google.log</code></td>
+				<td style="padding:9px 10px;border-bottom:1px solid var(--border)">Diagnosticar errores en tu propio equipo</td>
+			</tr>
+			<tr>
+				<td style="padding:9px 10px">Nombre y ruta de los archivos que abres</td>
+				<td style="padding:9px 10px">Tu PC y tu Google Drive</td>
+				<td style="padding:9px 10px">Subir la copia y abrirla en el editor correspondiente</td>
+			</tr>
+		</table>
+		<p class="note" style="margin-top:18px">
+			<strong>Estos datos nunca salen de tu ordenador salvo los que tú mismo envías a Google Drive</strong>
+			(el contenido de los archivos que decides abrir). La app no tiene servidores: no hay a dónde enviarlos.
+		</p>
+		<h3>Datos que office2google NO recoge</h3>
+		<ul>
+			<li>No recoge tu contraseña de Google (el login ocurre en la página oficial de Google).</li>
+			<li>No recoge historial de navegación, publicidad, identificadores de dispositivo ni localización.</li>
+			<li>No recoge métricas de uso, analíticas ni «telemetría» de ningún tipo.</li>
+			<li>No vende ni cede datos a terceros con fines comerciales.</li>
+		</ul>
+	</section>
+
+	<section id="google">
+		<h2>3. Uso de las APIs de Google</h2>
+		<p>
+			office2google utiliza la <strong>API de Google Drive</strong> para subir y localizar tus archivos.
+			El uso de esta información está sujeto a los
+			<a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener">Términos del servicio de datos de usuario de las APIs de Google</a>,
+			que office2google cumple.
+		</p>
+		<ul>
+			<li><strong>Alcance solicitado:</strong> <code>https://www.googleapis.com/auth/drive.file</code> — es el alcance mínimo: solo da acceso a los archivos <em>creados o abiertos por esta aplicación</em>, no al resto de tu Google Drive.</li>
+			<li><strong>Finalidad única:</strong> subir la copia del archivo que has abierto con doble click y localizar si ya existe para no duplicarlo.</li>
+			<li><strong>Uso para entrenar modelos de IA:</strong> ninguno. office2google no utiliza los datos de la API de Google para entrenar modelos de IA de terceros ni para ningún otro propósito.</li>
+			<li><strong>Revisión de la app:</strong> office2google no muestra anuncios ni monetiza a través de las APIs de Google.</li>
+		</ul>
+		<p>
+			Puedes consultar en cualquier momento qué aplicaciones tienen acceso a tu cuenta y retirar el permiso en
+			<a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">myaccount.google.com/permissions</a>.
+			También puedes eliminar la carpeta «Office2Google» desde tu propia Google Drive.
+		</p>
+	</section>
+
+	<section id="web">
+		<h2>4. Cookies y datos de este sitio web</h2>
+		<p>
+			Este sitio web es <strong>estático</strong>: no usa cookies de seguimiento, no incluye analíticas
+			(Google Analytics ni similares), no incluye publicidad y no guarda identificadores en tu navegador.
+		</p>
+		<p class="muted">
+			El alojamiento (Netlify) puede registrar de forma agregada y técnica datos de conexión estándar
+			(dirección IP, fecha, URL solicitada, agente de usuario) necesarios para la seguridad y el
+			funcionamiento del servicio. Estos registros son gestionados por el propio alojamiento conforme a
+			su <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener">política de privacidad</a>.
+		</p>
+	</section>
+
+	<section id="base">
+		<h2>5. Base jurídica y finalidad</h2>
+		<ul>
+			<li><strong>Consentimiento</strong> (art. 6.1.a RGPD): cuando autorizas a office2google a acceder a tu Google Drive mediante la pantalla de consentimiento de Google.</li>
+			<li><strong>Ejecución de un contrato</strong> (art. 6.1.b RGPD): para prestar la función que has solicitado (abrir un archivo en Google Docs/Sheets/Slides).</li>
+			<li><strong>Interés legítimo</strong> (art. 6.1.f RGPD): para mantener la sesión activa y registrar errores locales con el único fin de que la app funcione.</li>
+		</ul>
+		<p>Las finalidades son exclusivamente: autenticarte, subir la copia del archivo, abrir el editor de Google y diagnosticar errores en tu equipo.</p>
+	</section>
+
+	<section id="conservacion">
+		<h2>6. Conservación y seguridad</h2>
+		<ul>
+			<li><strong>Tokens y caché:</strong> se conservan en tu PC hasta que ejecutas <code>uninstall.bat</code> (que los elimina) o hasta que tú revocas el acceso desde tu cuenta de Google.</li>
+			<li><strong>Archivos en Drive:</strong> los eliminas tú desde Google Drive cuando quieras; la app no los borra nunca por su cuenta.</li>
+			<li><strong>Medidas de seguridad:</strong> comunicación cifrada (HTTPS) con los servidores de Google, flujo OAuth 2.0 con PKCE (S256), redirección a <code>127.0.0.1</code> (solo tu máquina), alcance mínimo <code>drive.file</code>, y almacenamiento de la sesión en la carpeta privada de tu usuario de Windows.</li>
+			<li><strong>Advertencia honesta:</strong> los tokens se guardan en archivo de texto dentro de tu usuario de Windows. Cualquier programa que se ejecute <em>con tu mismo usuario</em> podría leerlos. Por eso el alcance es el mínimo posible y puedes revocarlo en un clic.</li>
+		</ul>
+	</section>
+
+	<section id="terceros">
+		<h2>7. Terceros y transferencias internacionales</h2>
+		<p>
+			office2google no comparte datos con terceros. Los únicos destinatarios son:
+		</p>
+		<ul>
+			<li><strong>Google (Google Drive / Google Docs):</strong> el archivo que decides abrir y los permisos que tú autorizas. Consulta la <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">política de privacidad de Google</a>.</li>
+			<li><strong>Netlify:</strong> alojamiento de este sitio web, sin acceso a datos de la aplicación.</li>
+			<li><strong>GitHub:</strong> alojamiento del código fuente público.</li>
+		</ul>
+		<p class="muted">
+			Tus datos se tratan en los servidores de Google y de Netlify, que pueden estar ubicados fuera del Espacio Económico Europeo.
+			Ambas empresas son signatarias del <a href="https://www.privacyshield.gov/" target="_blank" rel="noopener">EU–US Data Privacy Framework</a>
+			y aplican garantías adecuadas conforme al artículo 46 del RGPD.
+		</p>
+	</section>
+
+	<section id="derechos">
+		<h2>8. Tus derechos</h2>
+		<p>Tienes derecho a:</p>
+		<ul>
+			<li><strong>Acceso, rectificación, supresión, limitación y portabilidad</strong> de tus datos.</li>
+			<li><strong>Oponerte</strong> al tratamiento y <strong>retirar tu consentimiento</strong> en cualquier momento, sin que ello afecte a la licitud del tratamiento previo.</li>
+		</ul>
+		<p>Cómo ejercerlos de forma sencilla:</p>
+		<ol>
+			<li><strong>Revocar el acceso de la app:</strong> <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">myaccount.google.com/permissions</a> → office2google → <em>Quitar acceso</em>.</li>
+			<li><strong>Borrar los datos locales:</strong> ejecuta <code>uninstall.bat</code> o elimina la carpeta <code>%APPDATA%\office2google\</code>.</li>
+			<li><strong>Borrar los archivos en Drive:</strong> elimina la carpeta «Office2Google» desde tu Google Drive.</li>
+			<li><strong>Cualquier otra solicitud:</strong> escribe a <a href="mailto:jpom1310@gmail.com">jpom1310@gmail.com</a> y te responderé.</li>
+		</ol>
+		<p class="muted">
+			Si consideras que el tratamiento no se ajusta a la normativa, tienes derecho a presentar una reclamación ante la
+			<a href="https://www.aepd.es/" target="_blank" rel="noopener">Agencia Española de Protección de Datos</a>
+			u otra autoridad de control competente.
+		</p>
+	</section>
+
+	<section id="menores">
+		<h2>9. Menores de edad</h2>
+		<p>
+			office2google no está dirigida a menores de 14 años y no trata conscientemente datos de menores.
+			Si detectas que un menor ha proporcionado datos personales, contacta con nosotros para su supresión.
+		</p>
+	</section>
+
+	<section id="cambios">
+		<h2>10. Cambios en esta política</h2>
+		<p>
+			Esta política puede actualizarse para reflejar cambios en la app o en la normativa. La fecha de la
+			última actualización aparece al principio de la página. Si el cambio es relevante, se anunciará
+			también en el <a href="https://github.com/Pabl0l/office2google" target="_blank" rel="noopener">repositorio de GitHub</a>.
+		</p>
+	</section>
+
+	<section id="contacto">
+		<h2>11. Contacto</h2>
+		<p>
+			Para cualquier pregunta sobre privacidad o sobre esta política escribe a
+			<a href="mailto:jpom1310@gmail.com">jpom1310@gmail.com</a>
+			o abre una incidencia en <a href="https://github.com/Pabl0l/office2google/issues" target="_blank" rel="noopener">GitHub Issues</a>.
+		</p>
+	</section>
+
+</main>
+
+<footer>
+	<div class="wrap">
+		<div class="links">
+			<a href="/">Inicio</a>
+			<a href="/privacidad">Política de privacidad</a>
+			<a href="/terminos">Condiciones del servicio</a>
+			<a href="https://github.com/Pabl0l/office2google" target="_blank" rel="noopener">GitHub</a>
+			<a href="mailto:jpom1310@gmail.com">Contacto</a>
+		</div>
+		<p>© 2026 office2google. No afiliado a Google ni a Microsoft.</p>
+	</div>
+</footer>
+
+</body>
+</html>

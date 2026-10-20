@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>office2google — Abre archivos Office en Google Docs, Sheets y Slides</title>
+<meta name="description" content="Doble click en un archivo .docx, .xlsx o .pptx y se abre en Google Docs, Sheets o Slides en tu navegador. Gratis, para Windows.">
+<meta name="theme-color" content="#0f1115">
+<meta property="og:title" content="office2google">
+<meta property="og:description" content="Doble click en un archivo Office → se abre en Google Docs / Sheets / Slides.">
+<meta property="og:type" content="website">
+<link rel="canonical" href="/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header>
+	<div class="wrap nav">
+		<a class="brand" href="/">office2<span>google</span></a>
+		<div class="spacer"></div>
+		<a class="link" href="#como-funciona">Cómo funciona</a>
+		<a class="link" href="#instalar">Instalar</a>
+		<a class="link" href="#faq">FAQ</a>
+		<a class="btn btn-primary" style="padding:9px 18px;font-size:15px" href="https://github.com/Pabl0l/office2google" target="_blank" rel="noopener">GitHub</a>
+	</div>
+</header>
+
+<main class="wrap">
+
+	<div class="hero">
+		<h1>Doble click en tu archivo Office&nbsp;→<br>se abre en Google</h1>
+		<p class="sub">
+			<code>.docx</code>, <code>.xlsx</code> o <code>.pptx</code>: en lugar de Word, Excel o PowerPoint,
+			se abren directamente en <strong>Google Docs, Sheets o Slides</strong> en tu navegador.
+			Gratis y para Windows.
+		</p>
+		<div class="cta">
+			<a class="btn btn-primary" href="https://github.com/Pabl0l/office2google" target="_blank" rel="noopener">Descargar desde GitHub</a>
+			<a class="btn btn-ghost" href="#como-funciona">Ver cómo funciona</a>
+		</div>
+	</div>
+
+	<section id="como-funciona">
+		<h2>Cómo funciona</h2>
+		<div class="flow">
+			<div class="card">
+				<div class="step">1</div>
+				<h3>Haces doble click</h3>
+				<p>Sobre cualquier archivo Office en tu PC, como siempre.</p>
+			</div>
+			<div class="card">
+				<div class="step">2</div>
+				<h3>Se sube a tu Drive</h3>
+				<p>office2google crea una copia en tu carpeta <em>Office2Google</em> de Google Drive.</p>
+			</div>
+			<div class="card">
+				<div class="step">3</div>
+				<h3>Se abre el editor</h3>
+				<p>Tu navegador carga Google Docs, Sheets o Slides listo para editar.</p>
+			</div>
+		</div>
+		<p class="muted" style="margin-top:18px">
+			▸ Tu archivo local <strong>nunca se mueve ni se borra</strong>: trabajas sobre la copia de Drive.<br>
+			▸ Si el archivo ya existe en Drive, <strong>no se duplica</strong>: se abre el que ya estaba.<br>
+			▸ La sesión se guarda <strong>solo en tu PC</strong>, en <code>%APPDATA%\office2google\</code>.
+		</p>
+	</section>
+
+	<section id="instalar">
+		<h2>Instalación en 2 clics</h2>
+		<div class="flow">
+			<div class="card">
+				<div class="step">1</div>
+				<h3>Ejecuta <code>install.bat</code></h3>
+				<p>Copia el programa a tu usuario y asocia las 9 extensiones Office. <strong>No pide administrador.</strong></p>
+			</div>
+			<div class="card">
+				<div class="step">2</div>
+				<h3>Doble click en tu <code>.docx</code></h3>
+				<p>Se abre Google → accedes con tu cuenta → listo. Solo la primera vez.</p>
+			</div>
+		</div>
+		<div class="note">
+			No necesitas Google Cloud Console, credenciales ni configuración: solo tu cuenta de Google.
+			Para desinstalar y volver a Word/Excel/PowerPoint, ejecuta <code>uninstall.bat</code> —
+			se revierte todo lo que se cambió.
+		</div>
+		<p class="chips">
+			<span class="chip">.docx</span><span class="chip">.doc</span><span class="chip">.docm</span>
+			<span class="chip">.xlsx</span><span class="chip">.xls</span><span class="chip">.xlsm</span>
+			<span class="chip">.pptx</span><span class="chip">.ppt</span><span class="chip">.pptm</span>
+		</p>
+	</section>
+
+	<section>
+		<h2>Privacidad en corto</h2>
+		<p class="muted">
+			office2google no tiene servidores propios, no recoge estadísticas, no usa cookies de seguimiento
+			y no vende datos. Tu sesión se guarda en tu ordenador y solo pide a Google el permiso mínimo
+			<code>drive.file</code> (los archivos que crea la app).
+		</p>
+		<p class="muted">
+			Los detalles completos están en la
+			<a href="/privacidad">Política de privacidad</a> y en las
+			<a href="/terminos">Condiciones del servicio</a>.
+		</p>
+	</section>
+
+	<section id="faq">
+		<h2>Preguntas frecuentes</h2>
+
+		<details>
+			<summary>¿Tiene algún coste?</summary>
+			<p>No. La app es gratuita y de código abierto; puedes verlo todo en GitHub. Solo necesitas una cuenta de Google (gratuita).</p>
+		</details>
+
+		<details>
+			<summary>¿Pierdo mi archivo original?</summary>
+			<p>No. El archivo local nunca se mueve ni se borra. Lo que haces es trabajar sobre la copia que está en tu Google Drive.</p>
+		</details>
+
+		<details>
+			<summary>¿Qué permisos pide a Google?</summary>
+			<p>Un único alcance: <code>drive.file</code>, que solo da acceso a los archivos que la propia app crea o abre. No lee el resto de tu Drive. Puedes revocarlo en <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">myaccount.google.com/permissions</a>.</p>
+		</details>
+
+		<details>
+			<summary>¿Dónde guarda mi sesión?</summary>
+			<p>En <code>%APPDATA%\office2google\config.json</code>, dentro de tu usuario de Windows. Nunca sale de tu PC ni se sube a ningún servidor nuestro (no tenemos).</p>
+		</details>
+
+		<details>
+			<summary>¿Windows Office deja de funcionar?</summary>
+			<p>No se desinstala nada. Lo que hace es cambiar la asociación de doble click; <code>uninstall.bat</code> la restaura exactamente como estaba antes (respalda y devuelve tu elección original).</p>
+		</details>
+
+		<details>
+			<summary>¿Funciona en Mac o Linux?</summary>
+			<p>De momento no: la asociación de doble click está implementada para Windows. El resto del programa es multiplataforma, así que es una posibilidad futura.</p>
+		</details>
+
+		<details>
+			<summary>¿Y si aparece "Google no ha verificado esta app"?</summary>
+			<p>Es el aviso estándar de Google para apps que aún no han pasado su verificación. Puedes continuar: pulsa <em>Avanzado</em> → <em>Ir a office2google (no seguro)</em>. Todo el código es público y auditable en GitHub.</p>
+		</details>
+	</section>
+
+	<section>
+		<h2>Código abierto</h2>
+		<p class="muted">
+			Todo el código de office2google está publicado en
+			<a href="https://github.com/Pabl0l/office2google" target="_blank" rel="noopener">github.com/Pabl0l/office2google</a>.
+			Puedes revisarlo, reportar problemas o proponer mejoras.
+		</p>
+	</section>
+
+</main>
+
+<footer>
+	<div class="wrap">
+		<div class="links">
+			<a href="/">Inicio</a>
+			<a href="/privacidad">Política de privacidad</a>
+			<a href="/terminos">Condiciones del servicio</a>
+			<a href="https://github.com/Pabl0l/office2google" target="_blank" rel="noopener">GitHub</a>
+			<a href="mailto:jpom1310@gmail.com">Contacto</a>
+		</div>
+		<p>© 2026 office2google. No afiliado a Google ni a Microsoft. Google Docs, Google Sheets, Google Slides, Google Drive, Microsoft Word, Excel y PowerPoint son marcas de sus respectivos propietarios.</p>
+	</div>
+</footer>
+
+</body>
+</html>

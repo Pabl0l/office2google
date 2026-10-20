@@ -12,6 +12,10 @@ Doble click en informe.docx
 - Si el archivo ya existe en Drive, **no se duplica**: abre el existente.
 - Los **tokens** (tu sesión) se guardan solo en tu PC (`%APPDATA%\office2google\`).
 
+**Sitio web** (landing + documentos legales, alojado gratis en Netlify):
+`https://office2google.netlify.app/` · [Política de privacidad](https://office2google.netlify.app/privacidad) · [Condiciones](https://office2google.netlify.app/terminos)
+— fuente en [`site/`](site/) (HTML estático, sin build).
+
 ---
 
 ## Instalación (solo quien distribuye)

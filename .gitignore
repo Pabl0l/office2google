@@ -22,6 +22,11 @@ logs/
 # Documentación interna de desarrollo (no es artefacto del producto)
 dev_*.md
 
+# Artefactos de revisión local (capturas del sitio web)
+.playwright-mcp/
+site-*.png
+site-*.jpeg
+
 # Backups / temporales
 *.bak
 *.tmp
