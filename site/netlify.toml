@@ -1,0 +1,52 @@
+# Configuración para desplazar con Base directory = "site"
+# (Netlify busca netlify.toml primero en el base directory; este archivo
+#  cubre ese caso. Si en cambio dejas el base directory vacío, se aplica
+#  el netlify.toml de la raíz del repo, que publica la carpeta site/.)
+#
+# publish "." = la raíz del base directory ES la carpeta site/ (sin subcarpeta)
+
+[build]
+	publish = "."
+
+[[redirects]]
+	from = "/privacidad"
+	to = "/privacy.html"
+	status = 200
+
+[[redirects]]
+	from = "/politica-de-privacidad"
+	to = "/privacy.html"
+	status = 200
+
+[[redirects]]
+	from = "/terminos"
+	to = "/terms.html"
+	status = 200
+
+[[redirects]]
+	from = "/condiciones"
+	to = "/terms.html"
+	status = 200
+
+[[redirects]]
+	from = "/privacy"
+	to = "/privacy.html"
+	status = 200
+
+[[redirects]]
+	from = "/terms"
+	to = "/terms.html"
+	status = 200
+
+[[redirects]]
+	from = "/*"
+	to = "/404.html"
+	status = 404
+
+[[headers]]
+	for = "/*"
+	[headers.values]
+		X-Content-Type-Options = "nosniff"
+		X-Frame-Options = "DENY"
+		Referrer-Policy = "strict-origin-when-cross-origin"
+		Permissions-Policy = "camera=(), microphone=(), geolocation=()"
