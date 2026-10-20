@@ -34,6 +34,13 @@ describe('drive', () => {
 			expect(error?.code).toBe('DRIVE_ERROR');
 			expect(error?.detail).toContain('cuota');
 		});
+
+		it('debería devolver AUTH_EXPIRED si Google responde 401 (sesión revocada)', async () => {
+			const mockFetch = (async () => json({ error: { message: 'Invalid Credentials' } }, 401)) as unknown as typeof fetch;
+			const [error] = await findFilesByName('tok', 'f', 'a.docx', mockFetch);
+			expect(error?.code).toBe('AUTH_EXPIRED');
+			expect(error?.detail).toContain('Invalid Credentials');
+		});
 	});
 
 	describe('ensureFolder', () => {
@@ -58,6 +65,12 @@ describe('drive', () => {
 			const [error, id] = await ensureFolder('tok', 'muerta', mockFetch);
 			expect(error).toBeNull();
 			expect(id).toBe('folder-buena');
+		});
+
+		it('debería devolver AUTH_EXPIRED si la carpeta cacheada responde 401', async () => {
+			const mockFetch = (async () => json({ error: { message: 'Invalid Credentials' } }, 401)) as unknown as typeof fetch;
+			const [error] = await ensureFolder('tok', 'folder-cacheada', mockFetch);
+			expect(error?.code).toBe('AUTH_EXPIRED');
 		});
 
 		it('debería crear la carpeta si no existe ninguna', async () => {
@@ -115,6 +128,12 @@ describe('drive', () => {
 			const [error] = await uploadFile('tok', { filePath: 'x', name: 'x.docx', mimeType: 'm', folderId: 'f' }, mockFetch);
 			expect(error?.code).toBe('UPLOAD_ERROR');
 			expect(error?.detail).toContain('permiso');
+		});
+
+		it('debería devolver AUTH_EXPIRED si la subida responde 401', async () => {
+			const mockFetch = (async () => json({ error: { message: 'Invalid Credentials' } }, 401)) as unknown as typeof fetch;
+			const [error] = await uploadFile('tok', { filePath: 'x', name: 'x.docx', mimeType: 'm', folderId: 'f' }, mockFetch);
+			expect(error?.code).toBe('AUTH_EXPIRED');
 		});
 	});
 });

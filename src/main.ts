@@ -57,11 +57,15 @@ export async function cmdSetup(cfgPath: string, jsonPath: string): Promise<Resul
 const NO_CLIENT_HELP =
 	'Opciones: 1) coloca client_secret.json junto a office2google.exe, o 2) ejecuta: office2google setup <client_secret.json>';
 
+/** Tipo de abridor de URL (inyectable para tests). */
+type Opener = (url: string) => Promise<Result<null>>;
+
 /** Asegura tokens válidos (login interactivo o refresh). */
 async function ensureTokens(
 	cfgPath: string,
 	cfg: AppConfig,
 	fetchFn = fetch,
+	opener?: Opener,
 ): Promise<Result<TokenSet>> {
 	const resolved = await loadClient(cfg);
 	if (!resolved) return err('NO_CLIENT', 'Falta el cliente de Google', NO_CLIENT_HELP);
@@ -79,11 +83,43 @@ async function ensureTokens(
 		// si el refresh falló, cae a login interactivo
 	}
 
-	console.log('Se abrirá Google en tu navegador para autorizar (solo la primera vez)...');
-	const [authErr, tokens] = await interactiveAuth(client, { fetchFn });
+	console.log('Se abrirá Google en tu navegador para autorizar...');
+	const [authErr, tokens] = await interactiveAuth(client, { fetchFn, opener });
 	if (authErr) return [authErr, null];
 	await saveConfig(cfgPath, { ...cfg, tokens });
 	return ok(tokens);
+}
+
+/** Borra la sesión guardada y fuerza un login interactivo nuevo. */
+async function reauthorize(
+	cfgPath: string,
+	cfg: AppConfig,
+	fetchFn = fetch,
+	opener?: Opener,
+): Promise<Result<TokenSet>> {
+	const cleared: AppConfig = { ...cfg, tokens: undefined };
+	await saveConfig(cfgPath, cleared);
+	return ensureTokens(cfgPath, cleared, fetchFn, opener);
+}
+
+/**
+ * Abre el archivo y, si Google responde que la sesión ya no vale (401),
+ * reautoriza y reintenta una sola vez.
+ */
+export async function openWithReauth(
+	open: (token: string) => Promise<Result<string>>,
+	reauth: () => Promise<Result<TokenSet>>,
+	initialToken: string,
+): Promise<Result<string>> {
+	const [err, url] = await open(initialToken);
+	if (!err) return [null, url];
+	if (err.code !== 'AUTH_EXPIRED') return [err, null];
+
+	console.log('La sesión de Google caducó o se revocó. Vuelve a autorizar...');
+	const [reErr, tokens] = await reauth();
+	if (reErr) return [reErr, null];
+	const [err2, url2] = await open(tokens.accessToken);
+	return err2 ? [err2, null] : [null, url2];
 }
 
 /** Abre un archivo: dedupe en Drive -> subir si no existe -> abrir editor. */
@@ -131,19 +167,32 @@ async function openOne(
 const FOLDER_MIME_SENTINEL = 'application/vnd.google-apps.folder';
 
 /** Orquesta la apertura de N archivos. */
-export async function runOpen(files: string[], fetchFn = fetch): Promise<AppError[]> {
+export async function runOpen(
+	files: string[],
+	fetchFn = fetch,
+	opener?: Opener,
+): Promise<AppError[]> {
 	const cfgPath = defaultConfigPath();
 	const [loadErr, cfg] = await loadConfig(cfgPath);
 	if (loadErr) return [loadErr];
 
-	const [tokErr, tokens] = await ensureTokens(cfgPath, cfg, fetchFn);
-	if (tokErr) return [tokErr];
+	const tokenResult = await ensureTokens(cfgPath, cfg, fetchFn, opener);
+	if (isErr(tokenResult)) return [tokenResult[0]];
+	let currentToken = tokenResult[1].accessToken;
 
 	const failures: AppError[] = [];
 	let currentCfg = cfg;
 	for (const file of files) {
 		await writeLog(defaultConfigDir(), `START ${file}`);
-		const [openErr, url] = await openOne(file, cfgPath, currentCfg, tokens.accessToken, fetchFn);
+		const [openErr, url] = await openWithReauth(
+			(token) => openOne(file, cfgPath, currentCfg, token, fetchFn),
+			async (): Promise<Result<TokenSet>> => {
+				const [reErr, newTokens] = await reauthorize(cfgPath, currentCfg, fetchFn, opener);
+				if (!reErr && newTokens) currentToken = newTokens.accessToken;
+				return reErr ? [reErr, null] : [null, newTokens];
+			},
+			currentToken,
+		);
 		if (openErr) {
 			failures.push(openErr);
 			console.error(`  ✗ ${openErr.message}${openErr.detail ? ` (${openErr.detail})` : ''}`);

@@ -33,6 +33,27 @@ async function apiError(res: Response): Promise<string> {
 	}
 }
 
+/**
+ * Mapea un error de la API de Drive.
+ * Un 401 significa que la sesión ya no vale (caducó o se revocó) → código propio
+ * para que la capa de arriba pueda reautorizar en vez de mostrar un error confuso.
+ */
+async function apiErr(
+	code: 'DRIVE_ERROR' | 'FOLDER_ERROR' | 'UPLOAD_ERROR',
+	res: Response,
+	message: string,
+): Promise<import('./result.ts').AppError> {
+	const detail = await apiError(res);
+	if (res.status === 401) {
+		return {
+			code: 'AUTH_EXPIRED',
+			message: 'La sesión de Google ya no es válida (caducó o se revocó)',
+			detail,
+		};
+	}
+	return { code, message, detail };
+}
+
 /** Busca archivos con un nombre exacto dentro de una carpeta. */
 export async function findFilesByName(
 	token: string,
@@ -44,7 +65,7 @@ export async function findFilesByName(
 	const url = `${API}/files?q=${encodeURIComponent(q)}&fields=files(id,name,mimeType,webViewLink)&pageSize=10`;
 	try {
 		const res = await fetchFn(url, { headers: authHeaders(token) });
-		if (!res.ok) return err('DRIVE_ERROR', 'No se pudo buscar en Drive', await apiError(res));
+		if (!res.ok) return [await apiErr('DRIVE_ERROR', res, 'No se pudo buscar en Drive'), null];
 		const data = (await res.json()) as { files?: DriveFile[] };
 		return ok(data.files ?? []);
 	} catch (e) {
@@ -63,6 +84,10 @@ export async function ensureFolder(
 			headers: authHeaders(token),
 		}).catch(() => null);
 		if (res?.ok) return ok(cachedId);
+		// 401: la sesion ya no vale -> que la capa de arriba reautorice
+		if (res?.status === 401) {
+			return err('AUTH_EXPIRED', 'La sesión de Google ya no es válida (caducó o se revocó)');
+		}
 		if (res && res.status !== 404 && res.status !== 403) {
 			return err('FOLDER_ERROR', 'No se pudo verificar la carpeta destino', await apiError(res));
 		}
@@ -108,7 +133,7 @@ export async function uploadFile(
 			headers: { Authorization: `Bearer ${token}` },
 			body: form,
 		});
-		if (!res.ok) return err('UPLOAD_ERROR', `No se pudo subir "${p.name}" a Drive`, await apiError(res));
+		if (!res.ok) return [await apiErr('UPLOAD_ERROR', res, `No se pudo subir "${p.name}" a Drive`), null];
 		const data = (await res.json()) as DriveFile;
 		if (!data.id) return err('UPLOAD_ERROR', 'Drive devolvió una respuesta sin id');
 		return ok(data);

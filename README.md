@@ -118,6 +118,21 @@ Restaura tus asociaciones originales (respalda y devuelve la elección de Window
 | `office2google auth` | (Re)hace login con Google |
 | `office2google status` | Diagnóstico de configuración (muestra de dónde salen las credenciales) |
 
+### Variable de entorno `O2G_BROWSER`
+
+Por defecto la app abre los enlaces con el navegador configurado en Windows. Para forzar uno
+concreto (útil si tu navegador por defecto no tiene sesión de Google iniciada, o quieres
+separar el trabajo en otro perfil):
+
+```powershell
+$env:O2G_BROWSER = 'chrome'   # chrome | edge | brave | firefox
+.\dist\office2google.exe "C:\...\informe.docx"
+```
+
+El enlace se abre en una **ventana propia** de ese navegador (no en una pestaña existente), para
+que no te pise las que tengas abiertas. Si el navegador indicado no está instalado, se cae
+automáticamente al navegador del sistema.
+
 ## Solución de problemas
 
 - **"Falta el cliente de Google"** → coloca `client_secret.json` junto al exe o ejecuta `office2google setup <json>`.

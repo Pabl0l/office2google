@@ -1,10 +1,12 @@
 import { describe, it, expect, afterEach } from 'bun:test';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
+import { existsSync } from 'node:fs';
 import { randomString } from '../src/oauth.ts';
-import { defaultConfigPath, loadConfig, saveConfig, tokensExpired, type AppConfig } from '../src/config.ts';
-import { openUrl } from '../src/browser.ts';
-import { parseArgs, cmdSetup } from '../src/main.ts';
+import { defaultConfigPath, loadConfig, saveConfig, tokensExpired, type AppConfig, type TokenSet } from '../src/config.ts';
+import { forcedBrowser, openUrl } from '../src/browser.ts';
+import { parseArgs, cmdSetup, openWithReauth } from '../src/main.ts';
+import { err, ok, type Result } from '../src/result.ts';
 
 const tmpFile = () => join(tmpdir(), 'o2g-test', `${randomString(8)}.json`);
 const cleanup: string[] = [];
@@ -114,6 +116,45 @@ describe('browser.openUrl', () => {
 	});
 });
 
+describe('browser.forcedBrowser', () => {
+	it('debería devolver undefined si no se pide navegador', () => {
+		expect(forcedBrowser({})).toBeUndefined();
+		expect(forcedBrowser({ O2G_BROWSER: '  ' })).toBeUndefined();
+	});
+
+	it('debería resolver el navegador pedido si está instalado', () => {
+		expect(forcedBrowser({ O2G_BROWSER: 'chrome' }, () => true)).toBe(
+			'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+		);
+		expect(forcedBrowser({ O2G_BROWSER: 'CHROME' }, () => true)).toContain('chrome.exe');
+		expect(forcedBrowser({ O2G_BROWSER: 'edge' }, () => true)).toContain('msedge.exe');
+	});
+
+	it('debería devolver undefined si el navegador no existe o no es válido', () => {
+		expect(forcedBrowser({ O2G_BROWSER: 'chrome' }, () => false)).toBeUndefined();
+		expect(forcedBrowser({ O2G_BROWSER: 'netscape' }, () => true)).toBeUndefined();
+	});
+
+	it('openUrl debería usar el navegador forzado y caer a rundll32 si no aplica', async () => {
+		const url = 'https://docs.google.com/document/d/abc_123/edit';
+		const chromePath = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+		let args: string[] = [];
+		const [error] = await openUrl(url, async (a) => { args = a; }, { O2G_BROWSER: 'chrome' });
+		expect(error).toBeNull();
+		if (existsSync(chromePath)) {
+			expect(args[0]).toBe(chromePath);
+			expect(args[1]).toBe('--new-window');
+			expect(args[2]).toBe(url);
+		} else {
+			expect(args[0]).toBe('rundll32.exe');
+		}
+
+		let fallback: string[] = [];
+		await openUrl(url, async (a) => { fallback = a; }, { O2G_BROWSER: 'inexistente' });
+		expect(fallback[0]).toBe('rundll32.exe');
+	});
+});
+
 describe('main.parseArgs', () => {
 	it('sin argumentos → usage', () => {
 		expect(parseArgs([]).kind).toBe('usage');
@@ -130,6 +171,52 @@ describe('main.parseArgs', () => {
 	});
 	it('rutas de archivo → open con todos los args', () => {
 		expect(parseArgs(['C:\\docs\\a.docx'])).toEqual({ kind: 'open', files: ['C:\\docs\\a.docx'] });
+	});
+});
+
+describe('main.openWithReauth', () => {
+	const nuevaSesion = (): Result<TokenSet> =>
+		ok<TokenSet>({ accessToken: 'tok-nuevo', expiresAt: Date.now() + 3_600_000 });
+
+	it('debería reautorizar y reintentar una vez si la sesión caducó', async () => {
+		const usados: string[] = [];
+		let intentos = 0;
+		const open = async (token: string): Promise<Result<string>> => {
+			usados.push(token);
+			intentos++;
+			if (intentos === 1) return err('AUTH_EXPIRED', 'La sesión ya no es válida');
+			return ok('https://docs.google.com/document/d/x/edit');
+		};
+		let reauths = 0;
+		const reauth = async (): Promise<Result<TokenSet>> => {
+			reauths++;
+			return nuevaSesion();
+		};
+
+		const [error, url] = await openWithReauth(open, reauth, 'tok-viejo');
+		expect(error).toBeNull();
+		expect(url).toContain('docs.google.com');
+		expect(reauths).toBe(1);
+		expect(usados).toEqual(['tok-viejo', 'tok-nuevo']);
+	});
+
+	it('no debería reautorizar si el error no es de sesión', async () => {
+		let reauths = 0;
+		const open = async (): Promise<Result<string>> => err('FILE_NOT_FOUND', 'No existe');
+		const reauth = async (): Promise<Result<TokenSet>> => {
+			reauths++;
+			return nuevaSesion();
+		};
+		const [error] = await openWithReauth(open, reauth, 'tok');
+		expect(error?.code).toBe('FILE_NOT_FOUND');
+		expect(reauths).toBe(0);
+	});
+
+	it('debería propagar el fallo si la reautorización falla', async () => {
+		const open = async (): Promise<Result<string>> => err('AUTH_EXPIRED', 'La sesión ya no es válida');
+		const reauth = async (): Promise<Result<TokenSet>> => err('AUTH_FAILED', 'El usuario canceló');
+		const [error] = await openWithReauth(open, reauth, 'tok');
+		expect(error?.code).toBe('AUTH_FAILED');
 	});
 });
 

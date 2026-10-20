@@ -7,6 +7,7 @@ export type ErrorCode =
 	| 'CONFIG_ERROR'
 	| 'NO_CLIENT'
 	| 'AUTH_FAILED'
+	| 'AUTH_EXPIRED'
 	| 'TOKEN_REFRESH_FAILED'
 	| 'DRIVE_ERROR'
 	| 'FOLDER_ERROR'
