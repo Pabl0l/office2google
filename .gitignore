@@ -1,0 +1,29 @@
+# Dependencias y build
+node_modules/
+dist/
+
+# Credenciales / secretos — NUNCA subir
+client_secret.json
+client_secret*.json
+*.pem
+.env
+.env.*
+
+# Credenciales OAuth embebidas (generadas por `bun run creds`).
+# En el repo vive una versión placeholder vacía; la real se mantiene local
+# vía `git update-index --skip-worktree src/client_credentials.ts`.
+# Ver README "Credenciales de Google".
+# (NO ignorar el path: debe quedar trackeado con el placeholder.)
+
+# Logs y runtime (%APPDATA%\office2google\office2google.log)
+*.log
+logs/
+
+# Documentación interna de desarrollo (no es artefacto del producto)
+dev_*.md
+
+# Backups / temporales
+*.bak
+*.tmp
+*.reg
+.o2gtest
